@@ -15,14 +15,12 @@ public class Insanity : MonoBehaviour
     public Image img2; 
     public  Image img3;
     public Image img4;
-<<<<<<< Updated upstream
 
-=======
     public GameObject pill;
     bool PillNeeded = false;
 
     // Start is called before the first frame update
->>>>>>> Stashed changes
+
     void Start()
     {
         
@@ -54,11 +52,11 @@ public class Insanity : MonoBehaviour
         }
         if (insanityTimer == EndGameTime) 
         {
-<<<<<<< Updated upstream
+
             //End Game
-=======
+
             Debug.Log("Kaboom");
->>>>>>> Stashed changes
+
         }
     }
 }
