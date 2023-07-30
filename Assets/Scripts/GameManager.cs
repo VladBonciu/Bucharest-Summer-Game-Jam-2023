@@ -20,6 +20,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     AudioSource humanVoice;
+    [SerializeField]
+    AudioClip humanGulp;
+    [SerializeField]
+    AudioClip humanDie;
 
     [SerializeField]
     AudioSource monitorSound;
@@ -40,18 +44,36 @@ public class GameManager : MonoBehaviour
     Cable[] cables;
     
 
+    [SerializeField]
+    Insanity insanity;
+
     int correctCuts;
     bool isCountingDown = false;
 
+    [SerializeField]
+    TMP_Text timerText;
+    int timer;
+
+    void Start()
+    {
+        tickingBomb.Stop();
+        
+    }
+
     public void StartGame()
     {
+        
         foreach(Cable cable in cables)
         {
             cable.Reset();
         }
 
-        cameraControl.GoToGame();
+        timer = 60;
+        StartCoroutine(Timer());
+
         hand.SetActive(true);
+        cameraControl.GoToGame();
+        
         correctCuts = 0;
         GenerateColorSequence();
 
@@ -60,10 +82,24 @@ public class GameManager : MonoBehaviour
         tickingBomb.Play();
         isCountingDown = false;
         ShowInstruction();
+
+        insanity.StartTimer();
+        insanity.gameStarted = true;
+
+
+    }
+
+    IEnumerator Timer()
+    {
+        timerText.text = timer.ToString();
+        yield return new WaitForSeconds(1f);
+        timer --;
+        StartCoroutine(Timer());
     }
 
     public void EndGame()
     {
+        timer = 60;
         hand.SetActive(false);
         correctCuts = 0;
 
@@ -72,6 +108,7 @@ public class GameManager : MonoBehaviour
 
         musicSource.Stop();
         StartCoroutine(StopTicking());
+        insanity.gameStarted = false;
     }
 
     public void LoseGame(int loseIndex)
@@ -88,7 +125,9 @@ public class GameManager : MonoBehaviour
         }
         if(loseIndex == 2)
         {
-
+            humanVoice.Stop();
+            humanVoice.clip = humanDie;
+            humanVoice.Play();
         }
 
         cameraControl.GoToMenu();
@@ -106,6 +145,12 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void GulpPill()
+    {
+        humanVoice.clip = humanGulp;
+        humanVoice.Play();
     }
 
     void GenerateColorSequence()
@@ -215,6 +260,14 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         tickingBomb.Stop();
+    }
+
+    void Update()
+    {
+        if(timer == 0)
+        {
+            LoseGame(1);
+        }
     }
 
 }

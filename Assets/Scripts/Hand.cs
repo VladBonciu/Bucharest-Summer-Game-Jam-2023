@@ -16,6 +16,9 @@ public class Hand : MonoBehaviour
     [SerializeField]
     TMP_Text interactionText;
 
+    [SerializeField]
+    Insanity insanity;
+
 
     void Start()
     {
@@ -52,14 +55,15 @@ public class Hand : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.Mouse0))
             {
-                Debug.Log("Interacted");
                 if(collider.GetComponent<Cable>())
                 {
                     collider.GetComponent<Cable>().Cut();
                 }
+
                 if (collider.GetComponent<Interactible>()) 
                 {
-                    collider.GetComponent<Interactible>().Hit();
+                    insanity.AddValue(collider.GetComponent<Interactible>().value.ToString());
+                    Destroy(collider.gameObject);
                     counter++;
                 }
             }

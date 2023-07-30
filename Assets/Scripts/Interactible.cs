@@ -5,21 +5,29 @@ using UnityEngine;
 public class Interactible : MonoBehaviour
 {
     public int value;
-    [SerializeField] GameObject gameManager;
-    // Start is called before the first frame update
+    [SerializeField] GameManager gameManager;
+    Insanity insanity;
+
     void Start()
     {
-        
+         gameManager = GetComponent<GameManager>();
+         insanity = GetComponent<Insanity>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Awake()
     {
-        
+          gameManager = GetComponent<GameManager>();
+          insanity = GetComponent<Insanity>();
     }
-  public void Hit() 
+    
+    public void Hit() 
     {
-    gameManager.GetComponent<Insanity>().taken += value.ToString();
+        gameManager = GetComponent<GameManager>();
+        insanity = GetComponent<Insanity>();
+        insanity.AddValue(value.ToString());
         Debug.Log("PillTaken");
+
+        gameManager.GulpPill();
+        Destroy(gameObject);
     }
 }

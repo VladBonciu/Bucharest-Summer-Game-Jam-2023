@@ -20,10 +20,9 @@ public class RandomizeColor : MonoBehaviour
     {
         
     }
- public   void RandomizeColors() 
+    public void RandomizeColors() 
     {
-        
-        randomColor = Random.Range(1, 4);
+        randomColor = Random.Range(1, 5);
         
         if (randomColor == 1)
         {
