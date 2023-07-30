@@ -11,6 +11,7 @@ public class Hand : MonoBehaviour
     Vector3 offset;
     [SerializeField]
     LayerMask mask;
+    int counter;
 
     [SerializeField]
     TMP_Text interactionText;
@@ -55,6 +56,11 @@ public class Hand : MonoBehaviour
                 if(collider.GetComponent<Cable>())
                 {
                     collider.GetComponent<Cable>().Cut();
+                }
+                if (collider.GetComponent<Interactible>()) 
+                {
+                    collider.GetComponent<Interactible>().Hit();
+                    counter++;
                 }
             }
         }

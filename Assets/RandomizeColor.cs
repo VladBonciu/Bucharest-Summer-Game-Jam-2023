@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 public class RandomizeColor : MonoBehaviour
 {
+   
+   
     public Image pillColor;
-   [SerializeField] int randomColor;
+  public int randomColor;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +22,9 @@ public class RandomizeColor : MonoBehaviour
     }
  public   void RandomizeColors() 
     {
+        
         randomColor = Random.Range(1, 4);
+        
         if (randomColor == 1)
         {
             pillColor.color = Color.red;
