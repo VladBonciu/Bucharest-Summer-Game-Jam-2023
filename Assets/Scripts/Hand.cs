@@ -29,7 +29,7 @@ public class Hand : MonoBehaviour
         {
             if(hit.transform != transform)
             {
-                transform.position = Vector3.Lerp(transform.position, hit.point + offset, Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, hit.point - Vector3.up * hit.point.y + offset, Time.deltaTime);
             }
             
             transform.RotateAround(transform.position ,transform.right , Input.mousePosition.x / Screen.width);

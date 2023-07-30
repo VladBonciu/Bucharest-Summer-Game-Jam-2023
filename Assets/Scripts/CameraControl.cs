@@ -10,12 +10,9 @@ public class CameraControl : MonoBehaviour
 
     public CinemachineVirtualCamera vcam4; //MenuCamera
 
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    GameManager gameManager;
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1)) 
@@ -40,12 +37,27 @@ public class CameraControl : MonoBehaviour
             vcam3.Priority = 1;
             vcam4.Priority = 0;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            vcam1.Priority = 0;
-            vcam2.Priority = 0;
-            vcam3.Priority = 0;
-            vcam4.Priority = 1;
+            GoToMenu();
         }
+    }
+
+    public void GoToMenu()
+    {
+        vcam1.Priority = 0;
+        vcam2.Priority = 0;
+        vcam3.Priority = 0;
+        vcam4.Priority = 1;
+
+        gameManager.EndGame();
+    }
+
+    public void GoToGame()
+    {
+        vcam1.Priority = 1;
+        vcam2.Priority = 0;
+        vcam3.Priority = 0;
+        vcam4.Priority = 0;
     }
 }
