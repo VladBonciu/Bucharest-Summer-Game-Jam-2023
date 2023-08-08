@@ -52,12 +52,11 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     TMP_Text timerText;
-    int timer;
+    int timer = 60;
 
     void Start()
     {
         tickingBomb.Stop();
-        
     }
 
     public void StartGame()
@@ -230,7 +229,9 @@ public class GameManager : MonoBehaviour
     IEnumerator CountDownMonitor()
     {
         isCountingDown = true;
+
         monitorText.text = cableColors[cablesCut.Count].ToString();
+
         yield return new WaitForSeconds(5f);
         monitorText.text = "Wait 10 seconds for the next instruction.";
         yield return new WaitForSeconds(1f);
@@ -252,6 +253,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         monitorText.text = "Wait 1 second for the next instruction.";
         yield return new WaitForSeconds(1f);
+
         isCountingDown = false;
         ShowInstruction();
     }

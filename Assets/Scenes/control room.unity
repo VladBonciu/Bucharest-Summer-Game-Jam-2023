@@ -3976,7 +3976,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colors: 
   taken: 
-  insanityTimer: 0
+  insanityTimer: 100
   PillTime: 0
   img1: {fileID: 368018280}
   img2: {fileID: 1530393108}
@@ -3984,6 +3984,7 @@ MonoBehaviour:
   img4: {fileID: 727484537}
   pill: {fileID: 6787882534113474641}
   gameStarted: 0
+  timerSpeed: 1.2
   gameManager: {fileID: 1003624499}
   pillz: {fileID: 2719836311825943166, guid: 929bd184cdce3ef48bc45b866462f591, type: 3}
 --- !u!4 &1003624498

@@ -18,6 +18,9 @@ public class Insanity : MonoBehaviour
     public GameObject pill;
     bool PillNeeded = false;
     public bool gameStarted;
+    
+    [SerializeField]
+    private float timerSpeed;
 
     [SerializeField]
     GameManager gameManager;
@@ -33,7 +36,7 @@ public class Insanity : MonoBehaviour
 
     public void StartTimer()
     {
-        insanityTimer = 0;
+        insanityTimer = 100;
         PillNeeded = false;
     }
 
@@ -42,7 +45,7 @@ public class Insanity : MonoBehaviour
     {
         if(gameStarted)
         {
-            insanityTimer += 1*Time.deltaTime;
+            insanityTimer -= timerSpeed *Time.deltaTime;
         }
         
 
@@ -63,7 +66,12 @@ public class Insanity : MonoBehaviour
             gameManager.LoseGame(2);
         }
 
-        if (insanityTimer >= 60f) 
+        if (insanityTimer < 50f) 
+        {
+            //Start Twitching
+        }
+
+        if (insanityTimer <= 0f) 
         {
             gameManager.LoseGame(2);
         }
