@@ -24,8 +24,7 @@ public class Interactible : MonoBehaviour
     {
         gameManager = GetComponent<GameManager>();
         insanity = GetComponent<Insanity>();
-        insanity.AddValue(value.ToString());
-        Debug.Log("PillTaken");
+        insanity.AddValue(value);
 
         gameManager.GulpPill();
         Destroy(gameObject);

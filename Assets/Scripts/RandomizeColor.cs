@@ -7,7 +7,7 @@ public class RandomizeColor : MonoBehaviour
    
    
     public Image pillColor;
-  public int randomColor;
+    public int randomColor;
     // Start is called before the first frame update
     void Start()
     {

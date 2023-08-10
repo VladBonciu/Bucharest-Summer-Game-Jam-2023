@@ -12,31 +12,35 @@ public class Hand : MonoBehaviour
     [SerializeField]
     LayerMask mask;
     int counter;
-
-    [SerializeField]
-    TMP_Text interactionText;
+    bool canTake;
+    
+    public TMP_Text interactionText;
 
     [SerializeField]
     Insanity insanity;
 
+    [SerializeField]
+    Vector3 twitchOffset;
 
     void Start()
     {
         interactionText.text = " ";
+        canTake = true;
     }
 
     void Update()
     {
-         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
+
         if(Physics.Raycast(ray, out hit, mask))
         {
             if(hit.transform != transform)
             {
-                transform.position = Vector3.Lerp(transform.position, hit.point - Vector3.up * hit.point.y + offset, Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, hit.point - Vector3.up * hit.point.y + offset + twitchOffset, Time.deltaTime);
             }
             
-            transform.RotateAround(transform.position ,transform.right , Input.mousePosition.x / Screen.width);
+            
         }
         
     }
@@ -53,8 +57,10 @@ public class Hand : MonoBehaviour
     {
         if(collider.gameObject.layer == LayerMask.NameToLayer("Interactable"))
         {
-            if(Input.GetKeyDown(KeyCode.Mouse0))
+            if(Input.GetKeyDown(KeyCode.Mouse0)  && canTake)
             {
+                StartCoroutine(CanTakeCooldown());
+
                 if(collider.GetComponent<Cable>())
                 {
                     collider.GetComponent<Cable>().Cut();
@@ -62,7 +68,7 @@ public class Hand : MonoBehaviour
 
                 if (collider.GetComponent<Interactible>()) 
                 {
-                    insanity.AddValue(collider.GetComponent<Interactible>().value.ToString());
+                    insanity.AddValue(collider.GetComponent<Interactible>().value);
                     Destroy(collider.gameObject);
                     counter++;
                 }
@@ -73,5 +79,18 @@ public class Hand : MonoBehaviour
     void OnTriggerExit(Collider collider)
     {
         interactionText.text = " ";
+    }
+
+    public IEnumerator Twitch(float twitchIndex)
+    {
+        twitchOffset = new Vector3(Random.Range(-twitchIndex, twitchIndex), 0, Random.Range(-twitchIndex, twitchIndex));
+        yield return new WaitForSeconds(1f);
+    }
+
+    IEnumerator CanTakeCooldown()
+    {
+        canTake = false;
+        yield return new WaitForSeconds(0.2f);
+        canTake = true;
     }
 }

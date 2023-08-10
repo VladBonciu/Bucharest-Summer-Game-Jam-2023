@@ -52,11 +52,17 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     TMP_Text timerText;
+
+    [SerializeField]
     int timer = 60;
+    int maxTime;
+    bool isUsingTimerMonitor;
 
     void Start()
     {
         tickingBomb.Stop();
+        isUsingTimerMonitor = false;
+        maxTime = timer;
     }
 
     public void StartGame()
@@ -67,7 +73,9 @@ public class GameManager : MonoBehaviour
             cable.Reset();
         }
 
-        timer = 60;
+        timer = maxTime;
+
+        isUsingTimerMonitor = true;
         StartCoroutine(Timer());
 
         hand.SetActive(true);
@@ -84,30 +92,38 @@ public class GameManager : MonoBehaviour
 
         insanity.StartTimer();
         insanity.gameStarted = true;
-
-
     }
 
     IEnumerator Timer()
     {
-        timerText.text = timer.ToString();
-        yield return new WaitForSeconds(1f);
-        timer --;
-        StartCoroutine(Timer());
+        if(isUsingTimerMonitor)
+        {
+            timerText.text = timer.ToString();
+            yield return new WaitForSeconds(1f);
+            timer--;
+            StartCoroutine(Timer());
+        }
+        
     }
 
     public void EndGame()
     {
-        timer = 60;
+        timer = maxTime;
         hand.SetActive(false);
         correctCuts = 0;
 
         cableColors.Clear();
         cablesCut.Clear();
 
+        insanity.colors.Clear();
+        insanity.inputColors.Clear();
+
         musicSource.Stop();
         StartCoroutine(StopTicking());
         insanity.gameStarted = false;
+        isUsingTimerMonitor = false;
+
+        hand.GetComponent<Hand>().interactionText.text = " ";
     }
 
     public void LoseGame(int loseIndex)
@@ -130,8 +146,11 @@ public class GameManager : MonoBehaviour
         }
 
         cameraControl.GoToMenu();
-        hand.SetActive(false);
         correctCuts = 0;
+        
+        EndGame();
+        hand.SetActive(false);
+
     }
 
     public void WinGame()
@@ -148,6 +167,7 @@ public class GameManager : MonoBehaviour
 
     public void GulpPill()
     {
+        humanVoice.Stop();
         humanVoice.clip = humanGulp;
         humanVoice.Play();
     }
@@ -229,9 +249,12 @@ public class GameManager : MonoBehaviour
     IEnumerator CountDownMonitor()
     {
         isCountingDown = true;
-
-        monitorText.text = cableColors[cablesCut.Count].ToString();
-
+        
+        if(cableColors.Count != 0)
+        {
+            monitorText.text = cableColors[cablesCut.Count].ToString();
+        }
+        
         yield return new WaitForSeconds(5f);
         monitorText.text = "Wait 10 seconds for the next instruction.";
         yield return new WaitForSeconds(1f);
@@ -260,7 +283,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StopTicking()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         tickingBomb.Stop();
     }
 
